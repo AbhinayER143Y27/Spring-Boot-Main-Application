@@ -1,0 +1,38 @@
+package com.example.sms.entity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "students")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
+
+    private String department;
+
+    /**
+     * @OneToOne: This is the relationship. One student has one fee account.
+     * cascade = CascadeType.ALL: If you delete the Student, delete their FeeAccount.
+     * orphanRemoval = true: If you set student.setFeeAccount(null), delete the old account.
+     * mappedBy = "student": Tells Hibernate the 'student' field in FeeAccount owns this relationship.
+     */
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FeeAccount feeAccount;
+
+    // Getters and Setters...
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+    public FeeAccount getFeeAccount() { return feeAccount; }
+    public void setFeeAccount(FeeAccount feeAccount) { this.feeAccount = feeAccount; }
+}
